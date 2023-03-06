@@ -1,0 +1,47 @@
+﻿@model Bycoders.DesafioDev.App.Models.OperacoesImportadasViewModel;
+
+@{
+    ViewData["Title"] = "Detalhes importação";
+}
+
+<div class="container" style=" padding-top: 20px">
+    <h4 style="padding-top: 50px">@ViewData["Title"] </h4>
+    <hr />
+
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    <p> Loja </p>
+                </th>
+                <th>
+                    <p> Total de Importações </p>
+                </th>
+                <th>
+                    <p> Saldo </p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var operacao in Model.Operacoes)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => operacao.NomeLoja)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => operacao.Transacoes.Count)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => operacao.Saldo)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a class="btn btn-danger" asp-controller="Importacao" asp-action="Index"> Voltar </a>
+</div>
+
+
+
