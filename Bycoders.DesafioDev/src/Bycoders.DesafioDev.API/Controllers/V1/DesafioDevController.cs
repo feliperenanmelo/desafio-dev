@@ -1,6 +1,7 @@
 ﻿using Bycoders.DesafioDev.API.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,14 +11,14 @@ namespace Bycoders.DesafioDev.API.Controllers.V1
     [Route("api/desafio-dev")]
     public class DesafioDevController : ControllerBase
     {
-        private readonly IFileService _fileService;
+        private readonly ILogger<DesafioDevController> _logger;        
         private readonly ITransacaoFinanceiraService _transacaoFinanceiraService;
 
         public DesafioDevController(
-            IFileService fileService,
+            ILogger<DesafioDevController> logger,            
             ITransacaoFinanceiraService transacaoFinanceiraService)
         {
-            _fileService = fileService;
+            _logger = logger;            
             _transacaoFinanceiraService = transacaoFinanceiraService;
         }
 
@@ -34,9 +35,7 @@ namespace Bycoders.DesafioDev.API.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> CreateByFile(IFormFile file)
         {
-            var sourcePath = await _fileService.Create(file);
-
-            var response = await _transacaoFinanceiraService.CreateByPathFile(sourcePath, file.FileName);
+            var response = await _transacaoFinanceiraService.CreateByPathFile(file);
 
             if (!response.TransacaoFinanceirasSucesso.Any()) return BadRequest(new { sucess = false, data = response });
 

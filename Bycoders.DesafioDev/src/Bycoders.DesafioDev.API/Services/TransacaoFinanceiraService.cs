@@ -4,6 +4,8 @@ using Bycoders.DesafioDev.API.Domain.Interfaces;
 using Bycoders.DesafioDev.API.Domain.Validators;
 using Bycoders.DesafioDev.API.Extensions;
 using Bycoders.DesafioDev.API.ViewModel;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,6 +17,8 @@ namespace Bycoders.DesafioDev.API.Services
 {
     public class TransacaoFinanceiraService : ITransacaoFinanceiraService
     {
+        private readonly ILogger<TransacaoFinanceiraService> _logger;
+
         private readonly CnabField _tipo;
         private readonly CnabField _data;
         private readonly CnabField _valor;
@@ -24,19 +28,19 @@ namespace Bycoders.DesafioDev.API.Services
         private readonly CnabField _donoLoja;
         private readonly CnabField _nomeLoja;
 
-        private readonly CnabConfigurations _configurations;
-        private readonly IFileService _fileService;
+        private readonly CnabConfigurations _configurations;        
         private readonly ITransacaoFinanceiraRepository _transacaoFinanceiraRepository;
         private readonly ITipoTransacaoRepository _tipoTransacaoRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public TransacaoFinanceiraService(
-            CnabConfigurations configurations,
-            IFileService fileService,
+            ILogger<TransacaoFinanceiraService> logger,
+            CnabConfigurations configurations,            
             ITransacaoFinanceiraRepository transacaoFinanceiraRepository,
             ITipoTransacaoRepository tipoTransacaoRepository,
             IUnitOfWork unitOfWork)
         {
+            _logger = logger;
             _configurations = configurations;
 
             _tipo = _configurations.CnabFields.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.Tipo);
@@ -47,8 +51,7 @@ namespace Bycoders.DesafioDev.API.Services
             _hora = _configurations.CnabFields.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.Hora);
             _donoLoja = _configurations.CnabFields.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.DonoLoja);
             _nomeLoja = _configurations.CnabFields.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.NomeLoja);
-
-            _fileService = fileService;
+                        
             _transacaoFinanceiraRepository = transacaoFinanceiraRepository;
             _tipoTransacaoRepository = tipoTransacaoRepository;
             _unitOfWork = unitOfWork;
@@ -84,12 +87,12 @@ namespace Bycoders.DesafioDev.API.Services
             };
         }
 
-        public async Task<TransacoesFinanceirasResponse> CreateByPathFile(string sourcePath, string fileName)
+        public async Task<TransacoesFinanceirasResponse> CreateByPathFile(IFormFile file)
         {
             List<TransacaoFinanceira> transacoesSucesso;
             List<TransacaoFinanceiraErroResponse> transacoesErro;
 
-            using (var sr = _fileService.CreateSreatemReader(sourcePath))
+            using (var sr = new StreamReader(file.OpenReadStream()))
             {
                 (transacoesSucesso, transacoesErro) = GetTransacoesFinanceirasBy(sr);
             }
@@ -98,9 +101,7 @@ namespace Bycoders.DesafioDev.API.Services
             {
                 await _transacaoFinanceiraRepository.AddRange(transacoesSucesso);
                 await _unitOfWork.CommitAsync();                
-            }
-
-            _fileService.MoveProcessed(sourcePath, fileName);
+            }            
 
             var tiposTransacao = await _tipoTransacaoRepository.GetAllTiposTransacao();
             transacoesSucesso.ForEach(transacaoSucesso =>

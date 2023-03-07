@@ -26,8 +26,7 @@ namespace Bycoders.DesafioDev.API.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITransacaoFinanceiraRepository, TransacaoFinanceiraRepository>();
             services.AddScoped<ITipoTransacaoRepository, TipoTransacaoRepository>();
-
-            services.AddScoped<IFileService, FileService>();
+                        
             services.AddScoped<ITransacaoFinanceiraService, TransacaoFinanceiraService>();
         }
     }

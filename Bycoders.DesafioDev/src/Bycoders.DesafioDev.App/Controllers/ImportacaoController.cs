@@ -1,6 +1,7 @@
 ﻿using Bycoders.DesafioDev.App.Models;
 using Bycoders.DesafioDev.App.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,10 +10,14 @@ namespace Bycoders.DesafioDev.App.Controllers
     public class ImportacaoController : Controller
     {
         private readonly IImportaHttpRepository _repository;
+        private readonly ILogger<ImportacaoController> _logger;
 
-        public ImportacaoController(IImportaHttpRepository repository)
+        public ImportacaoController(
+            IImportaHttpRepository repository,
+            ILogger<ImportacaoController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -23,10 +28,12 @@ namespace Bycoders.DesafioDev.App.Controllers
             return View();
         }
 
-        [HttpPost]        
+        [HttpPost]
         [Route("importar-transacoes-financeiras")]
         public async Task<IActionResult> Create(ImportacaoViewModel importacaoViewModel)
         {
+            _logger.LogInformation("Processando arquivo");
+
             var transacoes = await _repository.PostAsync(importacaoViewModel.File);
 
             var operacoesPorLoja = transacoes.Data.TransacaoFinanceirasSucesso
@@ -35,7 +42,9 @@ namespace Bycoders.DesafioDev.App.Controllers
                 {
                     NomeLoja = tran.Key,
                     Transacoes = tran.Select(t => t).ToList()
-                }).ToList(); 
+                }).ToList();
+
+            _logger.LogInformation("Arquivos processados");
 
             return View(new OperacoesImportadasViewModel() { Operacoes = operacoesPorLoja });
         }
