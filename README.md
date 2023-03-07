@@ -6,11 +6,11 @@ desenvolvido baseados em boas práticas de programação, arquitetura flexível 
 # Bycoders.DesafioDev.API
 # Api de transações desenvolvida utilziando NET 6.0 e entity frameqorkcore 6.0, utilizando os recursos possíveis de paginação e mapeamento de dados para facilitação de trabalho com banco de dados SQL SERVER
 
-| Método  | Enpoint | Body | Parameters | Descrição |
-| ------------- | ------------- | -----| -----| 
-| GET  | /api/desafio-dev  |  |  pageSize , page | Parametros passados na rota para paginação |
-| POST | /api/desafio-dev  | file |  | Parametro tipo form/data para envio de arquivos |
-| GET  | /api/desafio-dev/tipos-transacao |  | pageSize , page | Parametros passados na rota para paginação |
+| Método  | Enpoint                          | Body | Parameters       | Descrição                                       |
+| ------- | ------------------               | -----| ---------------- | ----------------------------------------------- |
+| GET     | /api/desafio-dev                 |      |  pageSize , page | Parametros passados na rota para paginação      |
+| POST    | /api/desafio-dev                 | file |                  | Parametro tipo form/data para envio de arquivos |
+| GET     | /api/desafio-dev/tipos-transacao |      | pageSize , page  | Parametros passados na rota para paginação      |
 
 # Bycoders.DesafioDev.App
 # App MVC desenvolvido em NET 6.0 com uma tela para importação do arquivo e outra tela para exibição de todos os detalhes das importações
