@@ -2,7 +2,6 @@
 using Bycoders.DesafioDev.API.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,29 +9,37 @@ namespace Bycoders.DesafioDev.API.Data.Repository
 {
     public abstract class BaseRepositry<T> : IRepository<T> where T : BaseEntity, IAggregateRoot
     {
-        protected DbSet<T> Context;
+        protected DbSet<T> DB;
 
-        protected BaseRepositry(TransacoesFinanceirasContext context)
+        protected BaseRepositry(TransacoesFinanceirasContext db)
         {
-            Context = context.Set<T>();
+            DB = db.Set<T>();
         }
 
-        public async Task AddRange(List<T> entities)
+        public async Task AdicionarPorLista(List<T> entity)
         {
-            await Context.AddRangeAsync(entities);
+            await DB.AddRangeAsync(entity);
         }
 
-        public virtual async Task<IEnumerable<T>> GetAll(int pageSize, int page)
+        public virtual async Task<IEnumerable<T>> ObterTodos(int tamanhoPagina, int indicePagina)
         {
-            return await Context
-                .AsNoTracking().Skip(pageSize * (page - 1))
-                .Take(pageSize)
+            return await DB
+                .AsNoTracking()
+                .Skip(tamanhoPagina * (indicePagina - 1))
+                .Take(tamanhoPagina)
                 .ToListAsync();
         }
 
-        public virtual async Task<int> GetCount()
+        public virtual async Task<IEnumerable<T>> ObterTodos()
         {
-            return await Context.CountAsync();
+            return await DB
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public virtual async Task<int> ObterQuantidadeRegistros()
+        {
+            return await DB.CountAsync();
         }
     }
 }

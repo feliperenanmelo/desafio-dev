@@ -4,20 +4,20 @@ namespace Bycoders.DesafioDev.API.Extensions
 {
     public static class TransacaoFinanceiraExtensions
     {
-        public static string GetValue(this string line, CnabField cnabField)
+        public static string ObterValor(this string linha, CnabCampo cnabCampo)
         {
-            var sizeLine = line.Length;
+            var tamanhoLinha = linha.Length;
 
-            var limit = sizeLine - (cnabField.Inicio);
+            var limite = tamanhoLinha - (cnabCampo.Inicio - 1);
 
-            var tamanho = cnabField.Tamanho;
+            var posicaoBusca = cnabCampo.Tamanho;
 
-            if (limit < cnabField.Tamanho)
-                tamanho = limit;
+            if (limite < cnabCampo.Tamanho)
+                posicaoBusca = limite;
 
-            var value = line.Substring(cnabField.Inicio - 1, tamanho);
+            var dados = linha.Substring(cnabCampo.Inicio - 1, posicaoBusca);
 
-            return value;
+            return dados;
         }
     }
 }

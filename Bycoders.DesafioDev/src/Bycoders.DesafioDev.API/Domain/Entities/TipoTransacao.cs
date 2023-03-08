@@ -21,6 +21,6 @@ namespace Bycoders.DesafioDev.API.Domain.Entities
         }
 
         public static TipoTransacao Create(string descricao, string natureza, char sinal)
-            => new TipoTransacao(descricao, natureza, sinal);
+            => new (descricao, natureza, sinal);
     }
 }

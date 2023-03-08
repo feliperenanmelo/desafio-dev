@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -30,9 +29,9 @@ namespace Bycoders.DesafioDev.API.Extensions
                await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(
                    new
                    {
-                       success = false,
-                       data = string.Empty,
-                       mensagem = ex.Message
+                       sucesso = false,
+                       dados = string.Empty,
+                       erro = ex.Message
                    }));
             }
 

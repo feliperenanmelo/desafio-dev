@@ -7,34 +7,34 @@ namespace Bycoders.DesafioDev.API.Extensions
 {
     public static class ViewModelExtensions
     {
-        public static TransacaoFinanceiraResponse ToTransacaoFinanceiraResponse(this TransacaoFinanceira transacaoFinanceira)
+        public static TransacaoFinanceiraResponse ParaTransacaoFinanceiraResponse(this TransacaoFinanceira transacaoFinanceira)
         {
             return TransacaoFinanceiraResponse
-                .Create(transacaoFinanceira.Id, transacaoFinanceira.TipoTransacao.ToTipoTransacaoResponse(), transacaoFinanceira.Data.ToString("yyyy-MM-dd"), transacaoFinanceira.CPF,
+                .Create(transacaoFinanceira.Id, transacaoFinanceira.TipoTransacao?.ParaTipoTransacaoResponse(), transacaoFinanceira.Data.ToString("yyyy-MM-dd"), transacaoFinanceira.CPF,
                 transacaoFinanceira.Cartao, transacaoFinanceira.Hora, transacaoFinanceira.Dono, transacaoFinanceira.NomeLoja, transacaoFinanceira.Valor);
         }
 
-        public static List<TransacaoFinanceiraResponse> ToTransacaoFinanceiraResponse(this IEnumerable<TransacaoFinanceira> transacoes)
+        public static List<TransacaoFinanceiraResponse> ParaTransacaoFinanceiraResponse(this IEnumerable<TransacaoFinanceira> transacoes)
         {
             var transacoesReponse = new List<TransacaoFinanceiraResponse>();
 
-            transacoes.ToList().ForEach(transacao 
-                => transacoesReponse.Add(transacao.ToTransacaoFinanceiraResponse()));
+            transacoes?.ToList()?.ForEach(transacao 
+                => transacoesReponse.Add(transacao?.ParaTransacaoFinanceiraResponse()));
 
             return transacoesReponse;
         }
 
-        public static TipoTransacaoResponse ToTipoTransacaoResponse(this TipoTransacao tipoTransacao)
+        public static TipoTransacaoResponse ParaTipoTransacaoResponse(this TipoTransacao tipoTransacao)
         {
             return TipoTransacaoResponse.Create(tipoTransacao.Descricao, tipoTransacao.Natureza, tipoTransacao.Sinal);            
         }
 
-        public static List<TipoTransacaoResponse> ToTipoTransacaoResponse(this IEnumerable<TipoTransacao> tiposTransacao)
+        public static List<TipoTransacaoResponse> ParaTipoTransacaoResponse(this IEnumerable<TipoTransacao> tiposTransacao)
         {
             var tiposTransacaoResponse = new List<TipoTransacaoResponse>();
 
-            tiposTransacao.ToList().ForEach(tipoTransacao
-                => tiposTransacaoResponse.Add(tipoTransacao.ToTipoTransacaoResponse()));
+            tiposTransacao?.ToList()?.ForEach(tipoTransacao
+                => tiposTransacaoResponse.Add(tipoTransacao?.ParaTipoTransacaoResponse()));
 
             return tiposTransacaoResponse;
         }

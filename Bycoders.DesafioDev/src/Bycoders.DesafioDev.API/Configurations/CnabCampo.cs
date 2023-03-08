@@ -2,12 +2,12 @@
 
 namespace Bycoders.DesafioDev.API.Configurations
 {
-    public class CnabConfigurations
+    public class CnabConfiguracoes
     {
-        public ICollection<CnabField> CnabFields { get; set; }
+        public ICollection<CnabCampo> CnabCampos { get; set; }
     }
 
-    public class CnabField
+    public class CnabCampo
     {
         public DescricaoCampo Descricao { get; set; }
         public int Inicio { get; set; }

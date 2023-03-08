@@ -9,17 +9,17 @@ using System;
 
 namespace Bycoders.DesafioDev.API.Extensions
 {
-    public static class DependencyInjectionExtensions
+    public static class InjecaoDependenciaExtensions
     {
-        public static void RegisterDependency(this IServiceCollection services, IConfiguration configuration)
+        public static void RegistrarDependencias(this IServiceCollection services, IConfiguration configuration)
         {   
-            var cnabConfigurations = configuration.Get<CnabConfigurations>();
-            services.AddSingleton<CnabConfigurations>(cnabConfigurations);
+            var cnabConfiguracoes = configuration.Get<CnabConfiguracoes>();
+            services.AddSingleton<CnabConfiguracoes>(cnabConfiguracoes);
 
-            string _connection = configuration.GetSection("ConnectionStrings")["DefaultConnection"];
+            string _conexao = configuration.GetSection("ConnectionStrings")["DefaultConnection"];
             services.AddDbContext<TransacoesFinanceirasContext>(options
                 => options
-                        .UseSqlServer(_connection)
+                        .UseSqlServer(_conexao)
                         .LogTo(Console.WriteLine)
                         .EnableSensitiveDataLogging());
 

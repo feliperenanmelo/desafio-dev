@@ -64,6 +64,6 @@ namespace Bycoders.DesafioDev.API.ViewModel
             string hora,
             string dono,
             string nomeLoja,
-            decimal valor) => new TransacaoFinanceiraResponse(id, tipoTransacao, data, cpf, cartao, hora, dono, nomeLoja, valor);        
+            decimal valor) => new (id, tipoTransacao, data, cpf, cartao, hora, dono, nomeLoja, valor);        
     }
 }

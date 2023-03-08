@@ -23,13 +23,13 @@ namespace Bycoders.DesafioDev.App
         
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApiConfiguration();
+            services.AddConfiguracoesApi();
 
-            services.RegisterDependencies(Configuration);
+            services.RegistrarDependencias(Configuration);
         }        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseApiConfiguration(env);
+            app.UseApiConfiguracoes(env);
         }
     }
 }

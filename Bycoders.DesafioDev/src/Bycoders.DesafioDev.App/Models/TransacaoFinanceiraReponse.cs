@@ -1,15 +1,16 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Bycoders.DesafioDev.App.Models
 {
     public class Reponse<T> where T : class
     {
-        [JsonProperty("success")]
-        public bool Success { get; set; }
+        [JsonProperty("successo")]
+        public bool Sucesso { get; set; }
 
-        [JsonProperty("data")]
-        public T Data { get; set; }
+        [JsonProperty("dados")]
+        public T Dados { get; set; }
     }
 
     public class TransacoesFinanceirasResponse 
@@ -72,6 +73,6 @@ namespace Bycoders.DesafioDev.App.Models
         public TransacaoFinanceiraResponse TransacaoFinanceira { get; private set; }
 
         [JsonProperty("erros")]
-        public IEnumerable<string> Erros { get; set; }
+        public List<string> Erros { get; set; }
     }
 }

@@ -1,8 +1,8 @@
-﻿using Bycoders.DesafioDev.App.Models;
+﻿using Bycoders.DesafioDev.App.Extensions;
+using Bycoders.DesafioDev.App.Models;
 using Bycoders.DesafioDev.App.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bycoders.DesafioDev.App.Controllers
@@ -32,21 +32,36 @@ namespace Bycoders.DesafioDev.App.Controllers
         [Route("importar-transacoes-financeiras")]
         public async Task<IActionResult> Create(ImportacaoViewModel importacaoViewModel)
         {
-            _logger.LogInformation("Processando arquivo");
+            var operacoesImportadasViewModel = new ImportacaoViewModel();
+
+            var megaByte = 1000000;
+
+            if (importacaoViewModel.File == null || importacaoViewModel.File?.Length > megaByte)
+            {
+                operacoesImportadasViewModel.Erros.Add("Arquivo inexistente ou maior que 1Mb");
+                return View("Index",operacoesImportadasViewModel);
+            }
+
+            var indiceExtensao = importacaoViewModel.File.FileName.LastIndexOf('.');
+
+            var extensao = importacaoViewModel.File.FileName.Substring(indiceExtensao, importacaoViewModel.File.FileName.Length - indiceExtensao);
+
+            if (!extensao.Contains(".txt"))
+            {
+                operacoesImportadasViewModel.Erros.Add("Arquivo com extensão inválida");
+                return View("Index",operacoesImportadasViewModel);
+            }
 
             var transacoes = await _repository.PostAsync(importacaoViewModel.File);
 
-            var operacoesPorLoja = transacoes.Data.TransacaoFinanceirasSucesso
-                .GroupBy(tran => tran.NomeLoja)
-                .Select(tran => new OperacaoPorLoja
-                {
-                    NomeLoja = tran.Key,
-                    Transacoes = tran.Select(t => t).ToList()
-                }).ToList();
+            var operacoesSucessoPorLoja = transacoes.Dados.TransacaoFinanceirasSucesso.ParaListaOperacoesSucessoPorLoja();
+            var operacoesErroPorLoja = transacoes.Dados.TransacaoFinanceirasComErro.ParaListaOperacoesErroPorLoja();
 
-            _logger.LogInformation("Arquivos processados");
-
-            return View(new OperacoesImportadasViewModel() { Operacoes = operacoesPorLoja });
+            return View(new OperacoesImportadasViewModel
+            {
+                OperacoesSucesso = operacoesSucessoPorLoja,
+                OperacoesNaoProcessadas = operacoesErroPorLoja
+            });
         }
     }
 }

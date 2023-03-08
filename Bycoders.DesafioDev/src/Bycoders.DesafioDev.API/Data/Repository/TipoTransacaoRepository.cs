@@ -10,11 +10,5 @@ namespace Bycoders.DesafioDev.API.Data.Repository
     {
         public TipoTransacaoRepository(TransacoesFinanceirasContext context) : base(context)
         { }
-
-        public virtual async Task<IEnumerable<TipoTransacao>> GetAllTiposTransacao()
-        {
-            return await Context.AsNoTracking().ToListAsync();
-        }
-
     }
 }

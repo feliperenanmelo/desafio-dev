@@ -1,4 +1,5 @@
-﻿@model Bycoders.DesafioDev.App.Models.OperacoesImportadasViewModel;
+﻿@using Bycoders.DesafioDev.App.Extensions
+@model Bycoders.DesafioDev.App.Models.OperacoesImportadasViewModel
 
 @{
     ViewData["Title"] = "Detalhes importação";
@@ -8,38 +9,63 @@
     <h4 style="padding-top: 50px">@ViewData["Title"] </h4>
     <hr />
 
-    <table class="table table-hover">
-        <thead class="thead-dark">
-            <tr>
-                <th>
-                    <p> Loja </p>
-                </th>
-                <th>
-                    <p> Total de Importações </p>
-                </th>
-                <th>
-                    <p> Saldo </p>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var operacao in Model.Operacoes)
+    @if (Model.OperacoesNaoProcessadas.Any())
+    {
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h5 id="msgRetorno" style="padding-top: 20px">Opa! Algo deu errado :(</h5>
+            @foreach (var transacoesNaoProcessadas in Model.OperacoesNaoProcessadas)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => operacao.NomeLoja)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => operacao.Transacoes.Count)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => operacao.Saldo)
-                    </td>
-                </tr>
+                <div>
+                    <p>
+                        Loja: @Html.DisplayFor(modelItem => transacoesNaoProcessadas.NomeLoja) <br>
+                        @foreach (var errosPorLinha in transacoesNaoProcessadas.Erros)
+                        {
+                            <small class="text-muted"> Linha: @Html.DisplayFor(item => errosPorLinha.Key)</small>
+                            <small class="text-muted"> Erros: @this.ObterErro(errosPorLinha.Value)</small>
+                            <br />
+                        }
+                    </p>
+                </div>
             }
-        </tbody>
-    </table>
+            <div style="padding-top: 20px" class="text-danger"></div>
+        </div>
+    }
 
+    @if (Model.OperacoesSucesso.Any())
+    {
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        <p> Loja </p>
+                    </th>
+                    <th>
+                        <p> Total de Importações </p>
+                    </th>
+                    <th>
+                        <p> Saldo </p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var operacao in Model.OperacoesSucesso)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => operacao.NomeLoja)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => operacao.Transacoes.Count)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => operacao.Saldo)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
     <a class="btn btn-danger" asp-controller="Importacao" asp-action="Index"> Voltar </a>
 </div>
 

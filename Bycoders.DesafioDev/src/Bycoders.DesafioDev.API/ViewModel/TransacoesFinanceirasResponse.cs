@@ -37,6 +37,6 @@ namespace Bycoders.DesafioDev.API.ViewModel
         { }
 
         public static TransacaoFinanceiraErroResponse Create(int posicao, TransacaoFinanceiraResponse transacaoFinanceira, IEnumerable<string> erros)
-            => new TransacaoFinanceiraErroResponse(posicao, transacaoFinanceira, erros);
+            => new (posicao, transacaoFinanceira, erros);
     }
 }

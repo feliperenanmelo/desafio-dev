@@ -6,8 +6,8 @@ namespace Bycoders.DesafioDev.API.Domain.Interfaces
 {
     public interface ITransacaoFinanceiraService
     {
-        Task<Paginacao<TipoTransacaoResponse>> GetAllTipoTransacao(int pageSize, int page);
-        Task<TransacoesFinanceirasResponse> CreateByPathFile(IFormFile file);
-        Task<Paginacao<TransacaoFinanceiraResponse>> GetAll(int pageSize, int page);
+        Task<Paginacao<TipoTransacaoResponse>> ObterTodosTiposTransacao(int pageSize, int page);
+        Task<TransacoesFinanceirasResponse> CriarPorArquivo(IFormFile file);
+        Task<Paginacao<TransacaoFinanceiraResponse>> ObterTodos(int pageSize, int page);
     }
 }

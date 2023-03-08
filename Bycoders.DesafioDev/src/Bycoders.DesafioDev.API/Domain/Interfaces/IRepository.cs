@@ -5,8 +5,9 @@ namespace Bycoders.DesafioDev.API.Domain.Interfaces
 {
     public interface IRepository<T> where T : IAggregateRoot
     {
-        Task AddRange(List<T> entities);
-        Task<IEnumerable<T>> GetAll(int pageSize, int page);
-        Task<int> GetCount();
+        Task AdicionarPorLista(List<T> entities);
+        Task<IEnumerable<T>> ObterTodos(int pageSize, int page);
+        Task<IEnumerable<T>> ObterTodos();
+        Task<int> ObterQuantidadeRegistros();
     }
 }

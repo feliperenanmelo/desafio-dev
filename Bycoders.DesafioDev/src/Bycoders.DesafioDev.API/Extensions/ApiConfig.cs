@@ -8,7 +8,7 @@ namespace Bycoders.DesafioDev.API.Extensions
 {
     public static class ApiConfig
     {
-        public static void AddApiConfiguration(this IServiceCollection services)
+        public static void AddConfiguracoesApi(this IServiceCollection services)
         {
             services
                .AddControllers()
@@ -18,7 +18,7 @@ namespace Bycoders.DesafioDev.API.Extensions
                });
         }
 
-        public static IApplicationBuilder UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment env)
+        public static IApplicationBuilder UseApiConfiguracoes(this IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

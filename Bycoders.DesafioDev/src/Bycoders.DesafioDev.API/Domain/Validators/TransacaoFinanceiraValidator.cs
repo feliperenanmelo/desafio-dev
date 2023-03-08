@@ -20,8 +20,7 @@ namespace Bycoders.DesafioDev.API.Domain.Validators
                 .NotNull()
                 .GreaterThan(decimal.MinValue)
                 .WithMessage("Valor inválido");
-
-            // CPF no arquivo contém apenas 10 caracteres
+            
             RuleFor(tran => tran.CPF)
                 .NotEmpty()
                 .Length(11)
@@ -30,7 +29,7 @@ namespace Bycoders.DesafioDev.API.Domain.Validators
             RuleFor(tran => tran.Cartao)
                 .NotEmpty()
                 .MinimumLength(1)
-                .MaximumLength(30)
+                .MaximumLength(5)
                 .WithMessage("Cartão inválido");
 
             RuleFor(tran => tran.Hora)

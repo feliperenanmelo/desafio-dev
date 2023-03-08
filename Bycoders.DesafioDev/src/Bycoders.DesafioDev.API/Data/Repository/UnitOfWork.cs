@@ -5,21 +5,21 @@ namespace Bycoders.DesafioDev.API.Data.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly TransacoesFinanceirasContext _context;
+        private readonly TransacoesFinanceirasContext _db;
 
         public UnitOfWork(TransacoesFinanceirasContext context)
         {
-            _context = context;
+            _db = context;
         }
 
         public async Task<bool> CommitAsync()
         {
-            return await _context.SaveChangesAsync() > 0;
+            return await _db.SaveChangesAsync() > 0;
         }
 
         public void Dispose()
         {
-            _context.DisposeAsync();
+            _db.Dispose();
         }
     }
 }

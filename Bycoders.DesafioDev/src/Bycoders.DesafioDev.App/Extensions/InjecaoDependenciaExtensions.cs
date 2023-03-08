@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Bycoders.DesafioDev.App.Extensions
 {
-    public static class DepndencyInjectionExtenstions
+    public static class InjecaoDependenciaExtensions
     {
-        public static void RegisterDependencies(this IServiceCollection services, IConfiguration configuration)
+        public static void RegistrarDependencias(this IServiceCollection services, IConfiguration configuration)
         {
             var appsettings = configuration.Get<Appsettings>();
             services.AddSingleton(appsettings);

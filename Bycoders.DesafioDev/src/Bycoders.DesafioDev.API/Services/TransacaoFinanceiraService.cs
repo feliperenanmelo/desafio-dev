@@ -19,99 +19,101 @@ namespace Bycoders.DesafioDev.API.Services
     {
         private readonly ILogger<TransacaoFinanceiraService> _logger;
 
-        private readonly CnabField _tipo;
-        private readonly CnabField _data;
-        private readonly CnabField _valor;
-        private readonly CnabField _cpf;
-        private readonly CnabField _cartao;
-        private readonly CnabField _hora;
-        private readonly CnabField _donoLoja;
-        private readonly CnabField _nomeLoja;
+        private readonly CnabCampo _tipo;
+        private readonly CnabCampo _data;
+        private readonly CnabCampo _valor;
+        private readonly CnabCampo _cpf;
+        private readonly CnabCampo _cartao;
+        private readonly CnabCampo _hora;
+        private readonly CnabCampo _donoLoja;
+        private readonly CnabCampo _nomeLoja;
 
-        private readonly CnabConfigurations _configurations;        
+        private readonly CnabConfiguracoes _configuracoes;        
         private readonly ITransacaoFinanceiraRepository _transacaoFinanceiraRepository;
         private readonly ITipoTransacaoRepository _tipoTransacaoRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public TransacaoFinanceiraService(
             ILogger<TransacaoFinanceiraService> logger,
-            CnabConfigurations configurations,            
+            CnabConfiguracoes configuracoes,            
             ITransacaoFinanceiraRepository transacaoFinanceiraRepository,
             ITipoTransacaoRepository tipoTransacaoRepository,
             IUnitOfWork unitOfWork)
         {
             _logger = logger;
-            _configurations = configurations;
+            _configuracoes = configuracoes;
 
-            _tipo = _configurations.CnabFields.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.Tipo);
-            _data = _configurations.CnabFields.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.Data);
-            _valor = _configurations.CnabFields.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.Valor);
-            _cpf = _configurations.CnabFields.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.CPF);
-            _cartao = _configurations.CnabFields.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.Cartao);
-            _hora = _configurations.CnabFields.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.Hora);
-            _donoLoja = _configurations.CnabFields.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.DonoLoja);
-            _nomeLoja = _configurations.CnabFields.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.NomeLoja);
+            _tipo = _configuracoes.CnabCampos.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.Tipo);
+            _data = _configuracoes.CnabCampos.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.Data);
+            _valor = _configuracoes.CnabCampos.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.Valor);
+            _cpf = _configuracoes.CnabCampos.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.CPF);
+            _cartao = _configuracoes.CnabCampos.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.Cartao);
+            _hora = _configuracoes.CnabCampos.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.Hora);
+            _donoLoja = _configuracoes.CnabCampos.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.DonoLoja);
+            _nomeLoja = _configuracoes.CnabCampos.FirstOrDefault(cnab => cnab.Descricao == DescricaoCampo.NomeLoja);
                         
             _transacaoFinanceiraRepository = transacaoFinanceiraRepository;
             _tipoTransacaoRepository = tipoTransacaoRepository;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Paginacao<TipoTransacaoResponse>> GetAllTipoTransacao(int pageSize, int page)
+        public async Task<Paginacao<TipoTransacaoResponse>> ObterTodosTiposTransacao(int tamanhoPagina, int indicePagina)
         {
-           var tiposTransacao = await _tipoTransacaoRepository.GetAll(pageSize, page);
+           var tiposTransacao = await _tipoTransacaoRepository.ObterTodos(tamanhoPagina, indicePagina);
 
-            var totalTiposTransacao = await _tipoTransacaoRepository.GetCount();
+            var totalTiposTransacao = await _tipoTransacaoRepository.ObterQuantidadeRegistros();
 
             return new Paginacao<TipoTransacaoResponse>
             {
-                Data = tiposTransacao.ToTipoTransacaoResponse(),
-                PageSize = pageSize,
-                PageIndex = page,
-                TotalResults = totalTiposTransacao
+                Dados = tiposTransacao.ParaTipoTransacaoResponse(),
+                TamanhoPagina = tamanhoPagina,
+                IndicePagina = indicePagina,
+                TotalPagina = totalTiposTransacao
             };
         }
 
-        public async Task<Paginacao<TransacaoFinanceiraResponse>> GetAll(int pageSize, int page)
+        public async Task<Paginacao<TransacaoFinanceiraResponse>> ObterTodos(int tamanhoPagina, int indicePagina)
         {
-            var transacoesFinanceiras = await _transacaoFinanceiraRepository.GetAll(pageSize, page);
+            var transacoesFinanceiras = await _transacaoFinanceiraRepository.ObterTodos(tamanhoPagina, indicePagina);
 
-            var totalTransaceosFinanceiras = await _transacaoFinanceiraRepository.GetCount();
+            var totalTransaceosFinanceiras = await _transacaoFinanceiraRepository.ObterQuantidadeRegistros();
 
             return new Paginacao<TransacaoFinanceiraResponse>
             {
-                Data = transacoesFinanceiras.ToTransacaoFinanceiraResponse(),
-                PageSize = pageSize,
-                PageIndex = page,
-                TotalResults = totalTransaceosFinanceiras
+                Dados = transacoesFinanceiras.ParaTransacaoFinanceiraResponse(),
+                TamanhoPagina = tamanhoPagina,
+                IndicePagina = indicePagina,
+                TotalPagina = totalTransaceosFinanceiras
             };
         }
 
-        public async Task<TransacoesFinanceirasResponse> CreateByPathFile(IFormFile file)
+        public async Task<TransacoesFinanceirasResponse> CriarPorArquivo(IFormFile aruqivo)
         {
             List<TransacaoFinanceira> transacoesSucesso;
             List<TransacaoFinanceiraErroResponse> transacoesErro;
 
-            using (var sr = new StreamReader(file.OpenReadStream()))
+            using (var sr = new StreamReader(aruqivo.OpenReadStream()))
             {
                 (transacoesSucesso, transacoesErro) = GetTransacoesFinanceirasBy(sr);
             }
 
             if (transacoesSucesso.Any())
             {
-                await _transacaoFinanceiraRepository.AddRange(transacoesSucesso);
+                await _transacaoFinanceiraRepository.AdicionarPorLista(transacoesSucesso);
                 await _unitOfWork.CommitAsync();                
             }            
 
-            var tiposTransacao = await _tipoTransacaoRepository.GetAllTiposTransacao();
+            var tiposTransacao = await _tipoTransacaoRepository.ObterTodos();
             transacoesSucesso.ForEach(transacaoSucesso =>
             {
-                transacaoSucesso.IncluirTipoTransacao(tiposTransacao.FirstOrDefault(tipo => tipo.Id.Equals(transacaoSucesso.TipoTransacaoId)));
+                transacaoSucesso.IncluirTipoTransacao(
+                    tiposTransacao.FirstOrDefault(tipo 
+                        => tipo.Id.Equals(transacaoSucesso.TipoTransacaoId)));
             });
 
             var transacoesResponse = new TransacoesFinanceirasResponse
             {
-                TransacaoFinanceirasSucesso = transacoesSucesso.ToTransacaoFinanceiraResponse(),
+                TransacaoFinanceirasSucesso = transacoesSucesso.ParaTransacaoFinanceiraResponse(),
                 TransacaoFinanceirasComErro = transacoesErro
             };
 
@@ -130,14 +132,14 @@ namespace Bycoders.DesafioDev.API.Services
                 var line = sr.ReadLine();
                 if (line == null) continue;
 
-                _ = int.TryParse(line.GetValue(_tipo), out var tipo);
-                _ = DateTime.TryParse(line.GetValue(_data).Insert(4, "-").Insert(7, "-"), new CultureInfo("pt-BR"), DateTimeStyles.None, out var data);
-                _ = decimal.TryParse(line.GetValue(_valor), out var valor);
-                var cpf = line.GetValue(_cpf);
-                var cartao = line.GetValue(_cartao);
-                var hora = line.GetValue(_hora);
-                var donoLoja = line.GetValue(_donoLoja);
-                var nomeLoja = line.GetValue(_nomeLoja);
+                _ = int.TryParse(line.ObterValor(_tipo), out var tipo);
+                _ = DateTime.TryParse(line.ObterValor(_data).Insert(4, "-").Insert(7, "-"), new CultureInfo("pt-BR"), DateTimeStyles.None, out var data);
+                _ = decimal.TryParse(line.ObterValor(_valor), out var valor);
+                var cpf = line.ObterValor(_cpf);
+                var cartao = line.ObterValor(_cartao);
+                var hora = line.ObterValor(_hora);
+                var donoLoja = line.ObterValor(_donoLoja);
+                var nomeLoja = line.ObterValor(_nomeLoja);
 
                 var transacaoFinanceira = TransacaoFinanceira.Create(tipo, data, cpf, cartao, hora, donoLoja, nomeLoja, valor);
 
@@ -146,7 +148,8 @@ namespace Bycoders.DesafioDev.API.Services
                 if (validator.IsValid)
                     transacoesSucesso.Add(transacaoFinanceira);
                 else
-                    transacoesErro.Add(TransacaoFinanceiraErroResponse.Create(posicao, transacaoFinanceira.ToTransacaoFinanceiraResponse(), validator.Errors.Select(err => err.ErrorMessage)));
+                    transacoesErro.Add(TransacaoFinanceiraErroResponse
+                        .Create(posicao, transacaoFinanceira.ParaTransacaoFinanceiraResponse(), validator.Errors.Select(err => err.ErrorMessage)));
             }
 
             return (transacoesSucesso, transacoesErro);
