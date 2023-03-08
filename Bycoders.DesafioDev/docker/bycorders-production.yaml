@@ -19,7 +19,7 @@ services:
       context: ../src
       dockerfile: ./Bycoders.DesafioDev.API/Dockerfile
     ports: 
-      - "5004:5004"
+      - "7002:7002"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:7002
@@ -33,7 +33,7 @@ services:
       context: ../src
       dockerfile: ./Bycoders.DesafioDev.App/Dockerfile
     ports: 
-      - "6001:6001"
+      - "6010:6010"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:6010
