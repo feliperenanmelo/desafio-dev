@@ -1,23 +1,28 @@
 # Desafio programação - para vaga desenvolvedor
 
 O projeto Bycoders.DesafioDev consiste em em frontend MVC e uma API de processamento de transações financeiras através de um arquivo TXT,
-desenvolvido baseados em boas práticas de programação, arquitetura flexível para implementação de novas features, clean code e uma série de outras complexidades.
+desenvolvido baseados em boas práticas de programação, arquitetura flexível para implementação de novas features, clean code, utilizando resiliência com polly para implemntação do pattern de retry e cirtuit breaker, padronização de respotas das APIs 
 
 # Bycoders.DesafioDev.API
-# Api de transações desenvolvida utilziando NET 6.0 e entity frameqorkcore 6.0, utilizando os recursos possíveis de paginação e mapeamento de dados para facilitação de trabalho com banco de dados SQL SERVER
+Api de transações desenvolvida utilziando NET 6.0 e entity frameqorkcore 6.0 para manipulação dos dados
 
 | Método  | Enpoint                          | Body | Parameters       | Descrição                                       |
 | ------- | ------------------               | -----| ---------------- | ----------------------------------------------- |
-| GET     | /api/desafio-dev                 |      |  pageSize , page | Parametros passados na rota para paginação      |
 | POST    | /api/desafio-dev                 | file |                  | Parametro tipo form/data para envio de arquivos |
-| GET     | /api/desafio-dev/tipos-transacao |      | pageSize , page  | Parametros passados na rota para paginação      |
 
 # Bycoders.DesafioDev.App
-# App MVC desenvolvido em NET 6.0 com uma tela para importação do arquivo e outra tela para exibição de todos os detalhes das importações
+App MVC desenvolvido em NET 6.0 com usso de bootstrap com uma tela para importação do arquivo e outra tela para exibição de todos os detalhes das importações com sucesso e erros.
 
-Execução do projeto
+# Execução do projeto
 
 Acesse o caminho :
-# desafio-dev/Bycoders.DesafioDev/docker/ e execute o comando docker-compose -f bycorders-production.yaml up
+desafio-dev/Bycoders.DesafioDev/docker/ e execute o comando # docker-compose -f bycorders-production.yaml up
 
-Serão criados os serviços de SQL Server, Api que ao subir cria o banco de dados e insere os dados padrõs de tipos de transação, app mvc.
+Após executar com sucesso o comando e criar os containers bycorders-desafio-dev-sql-server, bycorders-desafio-dev-backend e bycorders-desafio-dev-front,  você poderá acessar através de http://localhost:6010 a aplicação.
+
+# Execução dos testes
+
+Acesse o caminho :
+desafio-dev\Bycoders.DesafioDev\tests e execute o comando # dotnet test
+
+Tudo dando certo os testes automatizados e unitários serão executados
