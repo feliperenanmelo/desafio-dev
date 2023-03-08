@@ -2,6 +2,8 @@
 using Bycoders.DesafioDev.App.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
+using System;
 
 namespace Bycoders.DesafioDev.App.Extensions
 {
@@ -12,7 +14,10 @@ namespace Bycoders.DesafioDev.App.Extensions
             var appsettings = configuration.Get<Appsettings>();
             services.AddSingleton(appsettings);
 
-            services.AddHttpClient<IImportaHttpRepository, ImportaHttpRepository>();
+            services
+                .AddHttpClient<IImportaHttpRepository, ImportaHttpRepository>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(policy => policy.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
         }
     }
 }
