@@ -23,8 +23,18 @@ Após executar com sucesso o comando e criar os containers bycorders-desafio-dev
 
 # Execução dos testes
 
+Os testes automatizados foram feitos com uso de selenium web driver, para execução é necessário acessar o site https://chromedriver.chromium.org/downloads e baixar o chrome drive compatível com seu browser chrome
+
+Para saber sua versão de chrome basta acessar o chrome la lateral direita, clicar sobre os três pontinhos, depois ajuda em seguida Sobre o Google Chrome.
+Para o download você pode não achar a versão exata de driver, basta esolher a que mais se aproximar do seu.
+Ao fazer o download descompacte o arquivo até ver o chromedriver.exe.
+
 Acesse o caminho :
-desafio-dev\Bycoders.DesafioDev\tests e execute o comando 
+desafio-dev\Bycoders.DesafioDev\tests\Bycoders.DesafioDev.Tests e procure pelo arquivo appsettings.json
+Preencha o campo WebDriver o caminho para chegar no arquivo chromedriver.exe
+Ex: E:\\webDriver\\
+
+Volte ao caminho desafio-dev\Bycoders.DesafioDev\tests\Bycoders.DesafioDev.Tests e execute o comando 
 # dotnet test
 
 Tudo dando certo os testes automatizados e unitários serão executados
