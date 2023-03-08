@@ -4,14 +4,13 @@ namespace Bycoders.DesafioDev.API.Configurations
 {
     public class CnabConfiguracoes
     {
-        public ICollection<CnabCampo> CnabCampos { get; set; }
+        public virtual ICollection<CnabCampo> CnabCampos { get; set; }
     }
 
     public class CnabCampo
     {
         public DescricaoCampo Descricao { get; set; }
-        public int Inicio { get; set; }
-        public int Fim { get; set; }
+        public int Inicio { get; set; }        
         public int Tamanho { get; set; }
         public TipoCampo TipoCampo { get; set; }
     }

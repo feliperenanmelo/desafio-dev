@@ -29,7 +29,7 @@ namespace Bycoders.DesafioDev.API.Domain.Validators
             RuleFor(tran => tran.Cartao)
                 .NotEmpty()
                 .MinimumLength(1)
-                .MaximumLength(5)
+                .MaximumLength(30)
                 .WithMessage("Cartão inválido");
 
             RuleFor(tran => tran.Hora)

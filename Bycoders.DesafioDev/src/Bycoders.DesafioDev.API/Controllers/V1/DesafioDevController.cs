@@ -22,15 +22,7 @@ namespace Bycoders.DesafioDev.API.Controllers.V1
         {
             _logger = logger;
             _transacaoFinanceiraService = transacaoFinanceiraService;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ObterTodasTransacoesFinanceiras([FromQuery] int pageSize = 5, [FromQuery] int page = 1)
-        {
-            var resposta = await _transacaoFinanceiraService.ObterTodos(pageSize, page);
-
-            return ResponseRequest(resposta);
-        }
+        }       
 
         [HttpPost]
         public async Task<IActionResult> CriarTransacaoFinanceiraPorArquivo(IFormFile file)
@@ -56,15 +48,7 @@ namespace Bycoders.DesafioDev.API.Controllers.V1
             var resposta = await _transacaoFinanceiraService.CriarPorArquivo(file);
 
             return ResponseRequest(resposta);
-        }
-
-        [HttpGet("tipos-transacao")]
-        public async Task<IActionResult> ObterTodosTiposTransacao([FromQuery] int pageSize = 50, [FromQuery] int page = 1)
-        {
-            var resposta = await _transacaoFinanceiraService.ObterTodosTiposTransacao(pageSize, page);
-
-            return ResponseRequest(resposta);
-        }
+        }        
 
         private IActionResult ResponseRequest(object dados = null)
         {

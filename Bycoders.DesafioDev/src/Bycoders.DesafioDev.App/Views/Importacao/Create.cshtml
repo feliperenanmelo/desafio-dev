@@ -13,12 +13,12 @@
     {
         <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert">×</button>
-            <h5 id="msgRetorno" style="padding-top: 20px">Opa! Algo deu errado :(</h5>
+            <h5 id="msgRetorno" style="padding-top: 20px"><b>Opa! Algo deu errado :(</b></h5>
             @foreach (var transacoesNaoProcessadas in Model.OperacoesNaoProcessadas)
             {
                 <div>
                     <p>
-                        Loja: @Html.DisplayFor(modelItem => transacoesNaoProcessadas.NomeLoja) <br>
+                        <b>Loja: @Html.DisplayFor(modelItem => transacoesNaoProcessadas.NomeLoja)</b> <br>
                         @foreach (var errosPorLinha in transacoesNaoProcessadas.Erros)
                         {
                             <small class="text-muted"> Linha: @Html.DisplayFor(item => errosPorLinha.Key)</small>
@@ -34,17 +34,17 @@
 
     @if (Model.OperacoesSucesso.Any())
     {
-        <table class="table table-hover">
+        <table class="table table-hover" id="tabela">
             <thead class="thead-dark">
                 <tr>
-                    <th>
-                        <p> Loja </p>
+                    <th class="cabecalho">
+                        <b>Loja</b>
                     </th>
-                    <th>
-                        <p> Total de Importações </p>
+                    <th class="cabecalho">
+                        <b>Total de Importações</b>
                     </th>
-                    <th>
-                        <p> Saldo </p>
+                    <th class="cabecalho">
+                        <b>Saldo</b>
                     </th>
                 </tr>
             </thead>
@@ -52,13 +52,13 @@
                 @foreach (var operacao in Model.OperacoesSucesso)
                 {
                     <tr>
-                        <td>
+                        <td class="corpo">
                             @Html.DisplayFor(modelItem => operacao.NomeLoja)
                         </td>
-                        <td>
+                        <td class="corpo">
                             @Html.DisplayFor(modelItem => operacao.Transacoes.Count)
                         </td>
-                        <td>
+                        <td class="corpo">
                             @Html.DisplayFor(modelItem => operacao.Saldo)
                         </td>
                     </tr>

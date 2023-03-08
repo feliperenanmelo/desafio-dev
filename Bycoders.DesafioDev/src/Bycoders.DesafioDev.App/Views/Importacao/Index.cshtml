@@ -7,21 +7,18 @@
 <div class="container" style=" padding-top: 20px">
 
     <h3 style="padding-top: 50px">@ViewData["Title"] </h3>
-    <hr />   
+    <hr />
 
-    @if (Model?.Erros != null)
+    @if (!string.IsNullOrWhiteSpace(Model?.Erro))
     {
         <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert">×</button>
-            <h5 id="msgRetorno" style="padding-top: 20px">Opa! Algo deu errado :(</h5>
-            @foreach (var erro in Model.Erros)
-            {
-                <div>
-                    <p>
-                        @Html.DisplayFor(model => erro) <br>
-                    </p>
-                </div>
-            }
+            <h5 id="msgRetorno" style="padding-top: 20px"><b>Opa! Algo deu errado :(</b></h5>
+            <div id="erro">
+                <p>
+                    @Html.DisplayFor(model => model.Erro) <br>
+                </p>
+            </div>
             <div style="padding-top: 20px" class="text-danger"></div>
         </div>
     }
@@ -30,18 +27,18 @@
         <div class="col-md-5">
             <form enctype="multipart/form-data" asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                
+
                 <div class="form-group">
                     <label class="control-label">Procurar</label>
 
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="ImagemUpload" asp-for="File">
+                        <input type="file" class="custom-file-input" id="txt" asp-for="File">
                         <label data-browse="Procurar" style="width: 400px" class="custom-file-label" for="ImagemUpload"></label>
                         <label style="display: none" id="img_nome"></label>
-                    </div>                    
-                </div>                
+                    </div>
+                </div>
                 <div class="form-group">
-                    <input type="submit" value="Salvar" class="btn btn-success" />                    
+                    <input id="importar" type="submit" value="Importar" class="btn btn-success" />
                 </div>
             </form>
         </div>

@@ -57,36 +57,6 @@ namespace Bycoders.DesafioDev.API.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Paginacao<TipoTransacaoResponse>> ObterTodosTiposTransacao(int tamanhoPagina, int indicePagina)
-        {
-           var tiposTransacao = await _tipoTransacaoRepository.ObterTodos(tamanhoPagina, indicePagina);
-
-            var totalTiposTransacao = await _tipoTransacaoRepository.ObterQuantidadeRegistros();
-
-            return new Paginacao<TipoTransacaoResponse>
-            {
-                Dados = tiposTransacao.ParaTipoTransacaoResponse(),
-                TamanhoPagina = tamanhoPagina,
-                IndicePagina = indicePagina,
-                TotalPagina = totalTiposTransacao
-            };
-        }
-
-        public async Task<Paginacao<TransacaoFinanceiraResponse>> ObterTodos(int tamanhoPagina, int indicePagina)
-        {
-            var transacoesFinanceiras = await _transacaoFinanceiraRepository.ObterTodos(tamanhoPagina, indicePagina);
-
-            var totalTransaceosFinanceiras = await _transacaoFinanceiraRepository.ObterQuantidadeRegistros();
-
-            return new Paginacao<TransacaoFinanceiraResponse>
-            {
-                Dados = transacoesFinanceiras.ParaTransacaoFinanceiraResponse(),
-                TamanhoPagina = tamanhoPagina,
-                IndicePagina = indicePagina,
-                TotalPagina = totalTransaceosFinanceiras
-            };
-        }
-
         public async Task<TransacoesFinanceirasResponse> CriarPorArquivo(IFormFile aruqivo)
         {
             List<TransacaoFinanceira> transacoesSucesso;

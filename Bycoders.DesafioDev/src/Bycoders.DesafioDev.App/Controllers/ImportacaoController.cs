@@ -38,7 +38,7 @@ namespace Bycoders.DesafioDev.App.Controllers
 
             if (importacaoViewModel.File == null || importacaoViewModel.File?.Length > megaByte)
             {
-                operacoesImportadasViewModel.Erros.Add("Arquivo inexistente ou maior que 1Mb");
+                operacoesImportadasViewModel.Erro = "Arquivo inexistente ou maior que 1Mb";
                 return View("Index",operacoesImportadasViewModel);
             }
 
@@ -48,7 +48,7 @@ namespace Bycoders.DesafioDev.App.Controllers
 
             if (!extensao.Contains(".txt"))
             {
-                operacoesImportadasViewModel.Erros.Add("Arquivo com extensão inválida");
+                operacoesImportadasViewModel.Erro = "Arquivo com extensão inválida";
                 return View("Index",operacoesImportadasViewModel);
             }
 
