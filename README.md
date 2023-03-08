@@ -16,13 +16,15 @@ App MVC desenvolvido em NET 6.0 com usso de bootstrap com uma tela para importa�
 # Execução do projeto
 
 Acesse o caminho :
-desafio-dev/Bycoders.DesafioDev/docker/ e execute o comando # docker-compose -f bycorders-production.yaml up
+desafio-dev/Bycoders.DesafioDev/docker/ e execute o comando 
+# docker-compose -f bycorders-production.yaml up
 
 Após executar com sucesso o comando e criar os containers bycorders-desafio-dev-sql-server, bycorders-desafio-dev-backend e bycorders-desafio-dev-front,  você poderá acessar através de http://localhost:6010 a aplicação.
 
 # Execução dos testes
 
 Acesse o caminho :
-desafio-dev\Bycoders.DesafioDev\tests e execute o comando # dotnet test
+desafio-dev\Bycoders.DesafioDev\tests e execute o comando 
+# dotnet test
 
 Tudo dando certo os testes automatizados e unitários serão executados
